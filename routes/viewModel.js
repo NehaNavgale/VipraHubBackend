@@ -30,7 +30,7 @@ viewModelRouter.get('/', function(req, res, next){
     if (err) return next(err);
     var data = post;
     data.URL = "http://localhost:4000/uploadToMongo/chunks/ahhgshgs";
-    console.log(data);
+    /*console.log(data);*/
     res.json(data);
   }).lean().exec();
 });

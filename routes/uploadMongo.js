@@ -8,25 +8,70 @@ var Grid = require('gridfs-stream');
 var path = require('path');
 const fs = require('fs');
 var Archiver = require('archiver');
+var metaDataModel = require('../models/modelsMetadata');
+
+var Busboy = require('busboy');
+
 
 router.post('/models', (req,res) => {
-  console.log(req.body);
 
-  uploadFile.create(req.body, function (err, post) {
-    if (err) return console.log("Error in creating model : "+err);
-    res.json(post);
+  var metaInfo = new metaDataModel(req.body.metaInfo);
+
+  var upload = new uploadFile(req.body);
+  var conn = mongoose.connection;
+  var gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection('uploadFiles'); // set the collection to look up into
+  var readStream = gfs.createReadStream({
+    _id: req.body.metaInfo.file_id
+  });
+  const chunks = [];
+  var str = '';
+  readStream.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+  // Send the buffer or you can put it into a var
+  readStream.on("end", function () {
+    str = Buffer.concat(chunks).toString();
+    let obj = {};
+    let splitted = str.split("\n");
+    for (let i = 0; i < splitted.length - 1; i++) {
+      let splitLine = splitted[i].split(":");
+      obj[splitLine[0]] = splitLine[1].replace(/(\r\n|\n|\r)/gm, "");
+    }
+    // loop form data as key value pairs and pushed to existing "obj"
+    // for (var entry of formData.entries()) {
+    //   obj[entry[0]]  = entry[1];
+    // }
+
+    obj.Author= metaInfo.Author;
+    obj.categoryID= metaInfo.categoryID;
+    obj.model_name= metaInfo.model_name;
+    obj.experiment= metaInfo.experiment;
+    metaDataModel.create(obj, function (err, data) {
+
+      upload.metaID = data._id;
+      uploadFile.create(upload, function (err, data) {
+
+        try {
+          metaObj.experimentID = data._id;
+          res.json(data);
+        } catch (error) {
+          res.json(error);
+        }
+      });
+
+    });
   });
 });
 
 router.get('/models', function (req, res, next) {
-  console.log('inside models')
+  /*console.log('inside models')*/
   var name = req.query.name;
   var userID = req.query.userID;
   var experiment = req.query.experiment;
 
-  // console.log(name)
-  // console.log(userID)
-  console.log(experiment)
+  console.log(name)
+  console.log(userID)
 
   if ((name != undefined && name != "" && name != null) && (userID != undefined && userID != "" && userID != null)){
     console.log('both name and userID are given')
@@ -130,6 +175,9 @@ router.get('/chunks/:fileName', function(req, res, next){
   });
 });
 
+// var readStream = gfs.createReadStream({
+//   _id: req.params.fileID
+// }).pipe(res);
 
 router.get('/zipfiles', (req, response) => {
 

@@ -7,7 +7,7 @@ const commentsModel = require('../models/comments');
 commentsRoute.post('/postComments', function (req, res, next) {
   let comments = new commentsModel(req.body);
   comments.postedDate = new Date();
-  console.log('Comment at Router', comments);
+  /*console.log('Comment at Router', comments);*/
   commentsModel.create(comments)
     .then(comments => {
       res.status(200).json({message: 'Result: Comment added successfully'});
@@ -17,12 +17,14 @@ commentsRoute.post('/postComments', function (req, res, next) {
       res.status(400).send(err);
     });
 });
+
+//get route for fetching all comments of an experiment
 commentsRoute.get('/getAllComments/:modelID', function (req, res, next) {
   commentsModel.find({"modelID": req.params.modelID}, function (err, data) {
     if (err) console.log(err);
-    console.log(req.params.modelID);
+    /*console.log(req.params.modelID);*/
     var comments = data;
-    console.log(comments);
+    /*console.log(comments);*/
     res.json(data);
   }).lean().exec();
 });

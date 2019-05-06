@@ -8,7 +8,28 @@ var upload = require('../models/upload.js');
 
 // Model metadata CRUD
 
+
+router.get('/getAllModels', function (req, res, next) {
+  console.log('inside getAllModels')
+  var userid = req.query.userID;
+  modelsMetadata.find({"Author":userid}, function (err, data) {
+    console.log(data);
+    if (err) return next(err);
+    res.json(data);
+  });
+});
+
+
+router.put('/downloadCount', function (req, res, next) {
+  console.log("details " + req.body.downloadedCount)
+  modelsMetadata.update({ experiment: req.body.experiment }, { $set: {'downloadedCount': req.body.downloadedCount} }, function (err,post){
+    if (err) return next(err);
+    res.json(post);
+  })
+});
+
 router.get('/getAll', function (req, res, next) {
+  console.log("inside getAll");
   var q = req.query.q;
   if (q == undefined || q == "" || q == null)
   {
@@ -24,7 +45,7 @@ router.get('/getAll', function (req, res, next) {
       framework: { "$first": "$framework" },
       InputTensors: { "$first": "$InputTensors" },
       Year: { "$first": "$Year" },
-      Rating: { "$first": "$Rating" },
+        overAllRating: { "$first": "$overAllRating" },
       Optimizer: { "$first": "$Optimizer" }
     }}], function (err, data) {
       if (err) return next(err);
@@ -36,7 +57,7 @@ router.get('/getAll', function (req, res, next) {
         {"epochs": new RegExp(q, "gi")}, {"layersCount": new RegExp(q, "gi")}, {"InputTensors": new RegExp(q, "gi")},
         {"OutputTensor": new RegExp(q, "gi")}, {"Optimizer": new RegExp(q, "gi")}, {"LossFunction": new RegExp(q, "gi")},
         {"AccuracyValue": new RegExp(q, "gi")},{"LossValue": new RegExp(q, "gi")},{"Year": new RegExp(q, "gi")},
-        {"experiment": new RegExp(q, "gi")}, {"Rating": new RegExp(q, "gi")}]}},
+        {"experiment": new RegExp(q, "gi")}, {"overAllRating": new RegExp(q, "gi")}]}},
       {"$sort": { "model_name": 1, "AccuracyValue": -1 } },
       { $group: {
           _id: "$model_name",
@@ -49,7 +70,7 @@ router.get('/getAll', function (req, res, next) {
           framework: { "$first": "$framework" },
           InputTensors: { "$first": "$InputTensors" },
           Year: { "$first": "$Year" },
-          Rating: { "$first": "$Rating" },
+          overAllRating: { "$first": "$overAllRating" },
           Optimizer: { "$first": "$Optimizer" }
       }}], function (err, data) {
       if (err) return next(err);
@@ -71,7 +92,7 @@ router.post('/', function (req, res, next) {
 router.get('/getModels', function (req, res, next) {
    var userid = req.query.userid;
    usermodels.find({"userId":userid}, function (err, data) {
-     console.log(data);
+     /*console.log(data);*/
        if (err) return next(err);
        res.json(data);
      });
@@ -118,13 +139,16 @@ router.get('/getModel/:modelID', function(req, res, next){
 
 });
 
-// router.get('/get', function(req, res, next){
-//   modelsMetadata.find({}, function (err,data){
-//     if (err) return next(err);
-//     res.json(data);
-//   });
-// });
 
+// modelsMetadata.find({"Author": userID}, function (err,post){
+//   if (err) return next(err);
+//   res.json(post);
+// });
+// console.log('inside getModelsByUserId' + userID)
+// modelsMetadata.aggregate([{$match: {"Author": userID}}], function (err,post){
+//   if (err) return next(err);
+//   res.json(post);
+// });
 
 
 module.exports = router;
