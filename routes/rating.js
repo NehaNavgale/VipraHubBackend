@@ -22,6 +22,11 @@ ratingRoute.get('/getAllRatings/:modelID', function (req, res, next) {
   /*ratingsModel.find({"modelID": req.params.modelID}, function (err, data) {*/
   ratingsModel.aggregate(
     [
+        {
+            $match:{
+                'modelID': req.params.modelID
+            }
+        },
       {
         $group : {
           _id : "$modelID",

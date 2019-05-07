@@ -175,9 +175,11 @@ router.get('/chunks/:fileName', function(req, res, next){
   });
 });
 
-// var readStream = gfs.createReadStream({
-//   _id: req.params.fileID
-// }).pipe(res);
+router.get('/architecture/:id',(req,res)=>{
+  var readStream = gfs.createReadStream({
+    _id: req.params.fileID
+  }).pipe(res);
+})
 
 router.get('/zipfiles', (req, response) => {
 
