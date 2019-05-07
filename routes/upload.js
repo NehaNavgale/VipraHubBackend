@@ -15,11 +15,11 @@ router.post('/', function(req, res, next) {
       categoryId: 'category id',
       fileReferenceID: req.file.id
     });
-  
+
     uploadmodel.save(function(error){
-      if(error){ 
+      if(error){
         throw error;
-      } 
+      }
     });
 
     res.json({
