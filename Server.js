@@ -20,7 +20,7 @@ const ratingRoute = require('./routes/rating')
 
 app.use(express.json());
 app.use(bodyParser.json())
-app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
+app.use(cors({credentials: true, origin: 'https://viprahubbackend.herokuapp.com'}));
 
 
 app.use(express.urlencoded({extended: false}));
