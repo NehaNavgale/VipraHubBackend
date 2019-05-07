@@ -9,6 +9,7 @@ var path = require('path');
 const fs = require('fs');
 var Archiver = require('archiver');
 var metaDataModel = require('../models/modelsMetadata');
+const cors=require('cors');
 
 var Busboy = require('busboy');
 
@@ -20,6 +21,7 @@ router.post('/models', (req,res) => {
   var upload = new uploadFile(req.body);
   var conn = mongoose.connection;
   var gfs = Grid(conn.db, mongoose.mongo);
+  gfs.use(cors());
   gfs.collection('uploadFiles'); // set the collection to look up into
   var readStream = gfs.createReadStream({
     _id: req.body.metaInfo.file_id
