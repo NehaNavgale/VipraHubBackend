@@ -87,9 +87,9 @@ router.get('/models', function (req, res, next) {
       console.log(post)
       res.json(post);
     });
-  } else if((userID != undefined && userID != "" && userID != null) && (experiment != undefined && experiment != "" && experiment != null)) {
+  } else if(experiment != undefined && experiment != "" && experiment != null) {
     console.log('when experiment is given')
-    uploadFile.find({"userId": userID, "experiment": experiment}, function (err, data) {
+    uploadFile.find({"experiment": experiment}, function (err, data) {
       if (err) return next(err);
       res.json(data);
     });
