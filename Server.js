@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors({credentials: true, origin: 'https://viprahub.herokuapp.com'}));
 
+
 app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, '../dist/viprahub')));
