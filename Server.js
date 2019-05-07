@@ -16,13 +16,13 @@ const viewModelRoute = require('./routes/viewModel')
 const commentsRoute = require('./routes/comments')
 const ratingRoute = require('./routes/rating')
 
-
-
 app.use(express.json());
-app.use(bodyParser.json())
-app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
+app.use(bodyParser.json());
+app.use(cors({credentials: true, origin: 'https://viprahub.herokuapp.com'}));
 
 
+// app.use(cors());
+app.options('*', cors())
 app.use(express.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, '../dist/viprahub')));
 app.use('/home', express.static(path.join(__dirname, '../dist/viprahub')));
@@ -46,6 +46,7 @@ app.use('/comments', commentsRoute);
 app.use('/ratings', ratingRoute);
 var port = process.env.PORT || 4000;
 app.set('port', port);
+
 
 var server = http.createServer(app);
 
