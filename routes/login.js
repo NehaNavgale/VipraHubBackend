@@ -26,13 +26,9 @@ userRouter.post('/',function (req, res, next) {
         var temp = {
           emailID: data.emailID,
           fullName: data.firstName + data.lastName,
-          password: data.password,
           uploadCount: data.uploadedModels,
           downloadedCount: data.downloadedModels
         }
-
-        console.log("uploadcount" + temp.uploadCount);
-        console.log("password" + temp.password);
 
         res.json({message: "Success", user: temp});
       } else {

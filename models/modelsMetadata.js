@@ -15,13 +15,11 @@ var metadataSchema = new mongoose.Schema({
   Year:{type:String, text: true},
   Rating:{type:String, text: true},
   experiment: {type:String, text: true},
-  Author: {type:String},
-  categoryID: {type:String, text: true},
-  downloadedCount: {type:String},
-  overAllRating: {type:String}
+  Author: {type:String, text: true},
+  categoryID: {type:String, text: true}
 });
 
-// metadataSchema.index({Author: 'text', model_name: 'text', categoryID: 'text'});
+metadataSchema.index({Author: 'text', model_name: 'text', categoryID: 'text'});
 
 const modelsMetadata = mongoose.model('modelsmetadatas',metadataSchema);
 module.exports = modelsMetadata;

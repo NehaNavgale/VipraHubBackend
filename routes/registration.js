@@ -16,8 +16,8 @@ userRouter.post('/', function (req, res, next) {
 })
 
 userRouter.put('/uploadCount', function (req, res, next) {
-  console.log("details " + req.body.uploadedModels)
-  User.update({ emailID: req.body.emailID }, { $set: {'uploadedModels': req.body.uploadedModels} }, function (err,post){
+  let user = new User(req.body);
+  User.update(req.params.userEmail, { $set: {'uploadedModels': req.body.uploadCount} }, function (err,post){
     if (err) return next(err);
     res.json(post);
   })

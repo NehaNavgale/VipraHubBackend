@@ -14,7 +14,6 @@ const registrationRoute = require('./routes/registration');
 const loginRoute = require('./routes/login');
 const viewModelRoute = require('./routes/viewModel')
 const commentsRoute = require('./routes/comments')
-const ratingRoute = require('./routes/rating')
 
 
 
@@ -43,7 +42,6 @@ app.use('/registration', registrationRoute);
 app.use('/login', loginRoute);
 app.use('/viewModel', viewModelRoute);
 app.use('/comments', commentsRoute);
-app.use('/ratings', ratingRoute);
 var port = process.env.PORT || 4000;
 app.set('port', port);
 

@@ -29,6 +29,9 @@ const UserSchema = new mongoose.Schema({
   uploadedModels:{
     type: String
   },
+  downloadedModels:{
+    type: String
+  },
   /*for encryption and decryption of password saved*/
   saltSecret: String
 
