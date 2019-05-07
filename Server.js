@@ -16,8 +16,6 @@ const viewModelRoute = require('./routes/viewModel')
 const commentsRoute = require('./routes/comments')
 const ratingRoute = require('./routes/rating')
 
-
-
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors({credentials: true, origin: 'https://viprahub.herokuapp.com'}));
